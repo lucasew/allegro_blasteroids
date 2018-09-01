@@ -1,1 +1,0 @@
-https://raw.githubusercontent.com/dogriffiths/rssgossip/master/rssgossip.py
