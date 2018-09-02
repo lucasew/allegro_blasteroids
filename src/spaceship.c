@@ -5,6 +5,7 @@
 #include <allegro5/transformations.h>
 
 #include <blasteroids/utils.h>
+#include <blasteroids/config.h>
 #include <blasteroids/spaceship.h>
 
 void blasteroids_ship_draw(Spaceship *s) {
@@ -20,7 +21,9 @@ void blasteroids_ship_draw(Spaceship *s) {
 }
 
 void _log_spaceship(char *direction, Spaceship *s) {
+#ifdef DEBUG_SPACESHIP
     debug("spaceship %s (%f, %f) heading:%f speed:%f health:%i", direction, s->sx, s->sy, s->heading, s->speed, s->health);
+#endif
 }
 
 void blasteroids_ship_get_delta(float *deltax, float *deltay, Spaceship *s) {

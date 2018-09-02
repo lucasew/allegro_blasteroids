@@ -9,7 +9,9 @@
 #include <blasteroids/bullet.h>
 
 void _log_bullet(char *reason, struct Bullet *b) {
+#ifdef DEBUG_BULLET
     debug("bullet %s (%f, %f) h:%f s:%f pw:%i", reason, b->sx, b->sy, b->heading, b->speed, b->power);
+#endif
 }
 
 void blasteroids_bullet_draw(struct Bullet *b) {
