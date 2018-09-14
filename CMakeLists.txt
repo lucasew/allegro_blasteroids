@@ -4,6 +4,8 @@ project(blasteroids LANGUAGES C)
 
 include_directories(include/)
 
+add_subdirectory(dep/allegro5)
+
 add_executable(game
     main.c
     src/asteroid.c
@@ -17,6 +19,13 @@ add_executable(game
     src/utils/draw.c
     src/utils/signal.c
 )
+#SET(BUILD_SHARED_LIBS OFF)
 
-target_link_libraries(game -lallegro -lallegro_ttf -lallegro_font -lallegro_primitives -lm)
+#SET(CMAKE_EXE_LINK_FLAGS "-static")
+
+add_dependencies(game allegro allegro_primitives allegro_font allegro_ttf)
+
+#target_link_libraries(game -lallegro -lallegro_ttf -lallegro_font -lallegro_primitives -lm)
+target_link_libraries(game allegro allegro_primitives allegro_font allegro_ttf -lm)
+#target_link_libraries(game allegro_monolith -lm)
 
