@@ -4,8 +4,6 @@ project(blasteroids LANGUAGES C)
 
 include_directories(include/)
 
-add_subdirectory(dep/allegro5)
-
 add_executable(game
     main.c
     src/asteroid.c
@@ -21,10 +19,12 @@ add_executable(game
 )
 #SET(BUILD_SHARED_LIBS OFF)
 
+# Mandar o arquivo de fonte junto para o target
+add_custom_command(
+    TARGET game
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/font.ttf ${CMAKE_CURRENT_BINARY_DIR}/font.ttf
+)
 #SET(CMAKE_EXE_LINK_FLAGS "-static")
-
-add_dependencies(game allegro allegro_primitives allegro_font allegro_ttf)
-
 #target_link_libraries(game -lallegro -lallegro_ttf -lallegro_font -lallegro_primitives -lm)
 target_link_libraries(game allegro allegro_primitives allegro_font allegro_ttf -lm)
 #target_link_libraries(game allegro_monolith -lm)
