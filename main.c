@@ -59,6 +59,8 @@ int main() {
     al_register_event_source(ctx->event_queue, al_get_display_event_source(ctx->display));
     // Fonte
     ctx->font = al_load_font("./font.ttf", 24, 0);
+    if (ctx->font == NULL)
+        error("Arquivo font.ttf não encontrado.");
     // Criando spaceship de exemplo
     Spaceship *sp = malloc(sizeof(Spaceship));
     sp->sx = 200;
