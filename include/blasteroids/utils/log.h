@@ -1,5 +1,6 @@
 #ifndef _BLASTEROIDS_UTILS_LOG
 #define _BASTEROIDS_UTILS_LOG
+#include <blasteroids/config.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -19,8 +20,12 @@
     fprintf(stderr, "\n"); \
 } while(0)
 
+#ifdef DEBUG
 #define debug(...) \
     _print("DEBG", __VA_ARGS__)
+#else
+#define debug(...)
+#endif
 
 #define info(...) \
     _print("INFO", __VA_ARGS__)
