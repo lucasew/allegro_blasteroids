@@ -1,6 +1,5 @@
 #ifndef _BLASTEROIDS_ASTEROID
 #define _BLASTEROIDS_ASTEROID
-#include <blasteroids/context.h>
 
 // Estrutura
 typedef struct Asteroid Asteroid;
@@ -28,8 +27,6 @@ void blasteroids_asteroid_draw(Asteroid *a);
 
 void blasteroids_asteroid_draw_all(Asteroid *a);
 
-void blasteroids_asteroid_draw_life(GameContext *ctx);
-
 void blasteroids_asteroid_update(Asteroid *a);
 
 void blasteroids_asteroid_update_all(Asteroid *a);
@@ -43,6 +40,6 @@ int blasteroids_asteroid_gc(Asteroid *a);
 // Spawner
 #define RAND_COLOR rand()%200 + 55
 
-void blasteroids_asteroid_generate(GameContext *ctx);
+struct Asteroid blasteroids_asteroid_generate();
 
 #endif

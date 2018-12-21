@@ -1,7 +1,7 @@
 #ifndef _BLASTEROIDS_BULLET
 #define _BLASTEROIDS_BULLET
 
-#include <blasteroids/context.h>
+#include <allegro5/allegro.h>
 
 struct Bullet {
     float sx;
@@ -24,8 +24,6 @@ void blasteroids_bullet_update(struct Bullet *b, int HearthBeat);
 void blasteroids_bullet_update_all(struct Bullet *b, int HearthBeat);
 
 void blasteroids_bullet_append(struct Bullet *old, struct Bullet new);
-
-void blasteroids_bullet_shot(struct GameContext *ctx);
 
 void blasteroids_destroy_bullet(struct Bullet *b);
 

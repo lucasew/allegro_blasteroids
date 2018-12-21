@@ -10,17 +10,17 @@
 
 #include <blasteroids/context.h>
 void blasteroids_context_tick(GameContext *ctx) {
-    blasteroids_asteroid_update_all(ctx->asteroids);
-    blasteroids_bullet_update_all(ctx->bullets, ctx->HearthBeat);
+    blasteroids_asteroid_update_all(&ctx->asteroids);
+    blasteroids_bullet_update_all(&ctx->bullets, ctx->HearthBeat);
     blasteroids_context_update(ctx);
     blasteroids_context_draw(ctx);
 }
 
 void blasteroids_context_update(GameContext *ctx) {
     if (blasteroids_is_collision(ctx)) {
-        if(0 != blasteroids_asteroid_gc(ctx->asteroids)) // Ao matar um asteroide gerar outro, para dar mais emoção
+        if(0 != blasteroids_asteroid_gc(&ctx->asteroids)) // Ao matar um asteroide gerar outro, para dar mais emoção
             blasteroids_asteroid_generate(ctx);
-        blasteroids_bullet_gc(ctx->bullets);
+        blasteroids_bullet_gc(&ctx->bullets);
     }
     blasteroids_fix_positions(ctx);
 }
@@ -28,9 +28,9 @@ void blasteroids_context_update(GameContext *ctx) {
 void blasteroids_context_draw(GameContext *ctx) {
     al_flip_display();
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    blasteroids_ship_draw(ctx->ship);
-    blasteroids_asteroid_draw_all(ctx->asteroids);
-    blasteroids_bullet_draw_all(ctx->bullets);
+    blasteroids_ship_draw(&ctx->ship);
+    blasteroids_asteroid_draw_all(&ctx->asteroids);
+    blasteroids_bullet_draw_all(&ctx->bullets);
     draw_life(ctx);
     draw_score(ctx);
     blasteroids_asteroid_draw_life(ctx);
@@ -45,4 +45,29 @@ int blasteroids_display_w(GameContext *ctx) {
 
 int blasteroids_display_h(GameContext *ctx) {
     return al_get_display_height(ctx->display);
+}
+
+void blasteroids_asteroid_draw_life(GameContext *ctx) {
+    if (ctx->asteroids.next == NULL) return;
+    struct Asteroid *a = ctx->asteroids.next; // O primeiro só tá lá pra facilitar
+    while (a != NULL) {
+        ALLEGRO_TRANSFORM t;
+        al_identity_transform(&t);
+        al_translate_transform(&t, a->sx, a->sy);
+        al_use_transform(&t);
+        al_draw_textf(ctx->font, al_map_rgb(255, 0, 0), 0, 0, ALLEGRO_ALIGN_CENTER, "%i", a->health);
+        a = a->next;
+    }
+}
+
+void blasteroids_bullet_shot(struct GameContext *ctx) {
+    Bullet bt;
+    bt.sx = ctx->ship.sx;
+    bt.sy = ctx->ship.sy;
+    bt.heading = ctx->ship.heading;
+    bt.speed = 1 + rand()%100;
+    bt.power = 1 + rand()%50;
+    bt.color = al_map_rgb(rand()%255, rand()%255, rand()%255);
+    bt.next = NULL;
+    blasteroids_bullet_append(&ctx->bullets, bt);   
 }

@@ -2,7 +2,6 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#include <blasteroids/context.h>
 #include <blasteroids/config.h>
 #include <blasteroids/utils.h>
 #include <blasteroids/spaceship.h>
@@ -61,20 +60,9 @@ void blasteroids_bullet_append(struct Bullet *old, struct Bullet new) { // Eu do
     old->next = tmp;
 }
 
-void blasteroids_bullet_shot(struct GameContext *ctx) {
-    Bullet bt;
-    bt.sx = ctx->ship->sx;
-    bt.sy = ctx->ship->sy;
-    bt.heading = ctx->ship->heading;
-    bt.speed = 1 + rand()%100;
-    bt.power = 1 + rand()%50;
-    bt.color = al_map_rgb(rand()%255, rand()%255, rand()%255);
-    bt.next = NULL;
-    blasteroids_bullet_append(ctx->bullets, bt);   
-}
-
 void blasteroids_destroy_bullet(struct Bullet *b) {
     struct Bullet *dummy;
+    b = b->next; // O primeiro bullet não é feito malloc
     while (b != NULL) {
         dummy = b;
         b = b->next;

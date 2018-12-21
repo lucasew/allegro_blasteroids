@@ -54,19 +54,6 @@ void blasteroids_asteroid_draw_all(struct Asteroid *a) {
     }
 }
 
-void blasteroids_asteroid_draw_life(GameContext *ctx) {
-    if (ctx->asteroids->next == NULL) return;
-    struct Asteroid *a = ctx->asteroids->next; // O primeiro só tá lá pra facilitar
-    while (a != NULL) {
-        ALLEGRO_TRANSFORM t;
-        al_identity_transform(&t);
-        al_translate_transform(&t, a->sx, a->sy);
-        al_use_transform(&t);
-        al_draw_textf(ctx->font, al_map_rgb(255, 0, 0), 0, 0, ALLEGRO_ALIGN_CENTER, "%i", a->health);
-        a = a->next;
-    }
-}
-
 void blasteroids_asteroid_update(struct Asteroid *a) {
     _log_asteroid("before", a);
     a->heading = a->heading + a->rot_velocity/FPS;
@@ -93,6 +80,7 @@ void blasteroids_asteroid_append(struct Asteroid *old, struct Asteroid new) {// 
 
 void blasteroids_destroy_asteroid(struct Asteroid *a) {
     struct Asteroid *dummy;
+    a = a->next; // Primeiro asteroide não faz malloc
     while (a != NULL) {
         dummy = a;
         a = a->next;
@@ -117,11 +105,11 @@ int blasteroids_asteroid_gc(struct Asteroid *a) {
     return destroyed;
 }
 
-void blasteroids_asteroid_generate(GameContext *ctx) {
+struct Asteroid blasteroids_asteroid_generate(int max_x, int max_y) {
     srand(time(NULL));
     Asteroid as;
-    as.sx = rand() % blasteroids_display_w(ctx);
-    as.sy = rand() % blasteroids_display_h(ctx);
+    as.sx = rand() % max_x;
+    as.sy = rand() % max_y;
     as.heading = rand() % 360;
     as.speed = (float)((rand() % 200)/10.0);
     as.rot_velocity = (float)(rand()%20);
@@ -129,5 +117,5 @@ void blasteroids_asteroid_generate(GameContext *ctx) {
     as.health = rand() % 200;
     as.color = al_map_rgb(RAND_COLOR, RAND_COLOR, RAND_COLOR);
     as.next = NULL;
-    blasteroids_asteroid_append(ctx->asteroids, as);
+    return as;
 }
