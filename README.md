@@ -1,6 +1,6 @@
 # allegro_blasteroids
 
-Um jogo simples onde o objetivo é destruir o máximo de asteróides possível.
+Um jogo simples onde o objetivo é destruir o máximo de asteróides possível. [AUR](https://aur.archlinux.org/packages/allegro-blasteroids-git/)
 
 ![jogo](https://raw.githubusercontent.com/lucas59356/allegro_blasteroids/master/doc/jogo.png)
 
