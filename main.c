@@ -23,6 +23,7 @@ bool running = true;
 GameContext ctx;
 
 int main() {
+    srand(time(NULL));
     info("Iniciando...");
     // Signal handler
     if(catch_signal(SIGINT, stop) == -1 || catch_signal(SIGTERM, stop) == -1)

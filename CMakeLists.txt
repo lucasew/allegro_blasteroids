@@ -7,6 +7,7 @@ include_directories(include/)
 add_library(blasteroids_utils
     src/utils/draw.c
     src/utils/signal.c
+    src/utils/rand.c
 )
 
 add_library(blasteroids_core

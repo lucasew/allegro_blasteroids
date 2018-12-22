@@ -106,16 +106,15 @@ int blasteroids_asteroid_gc(struct Asteroid *a) {
 }
 
 struct Asteroid blasteroids_asteroid_generate(int max_x, int max_y) {
-    srand(time(NULL));
-    Asteroid as;
-    as.sx = rand() % max_x;
-    as.sy = rand() % max_y;
-    as.heading = rand() % 360;
-    as.speed = (float)((rand() % 200)/10.0);
-    as.rot_velocity = (float)(rand()%20);
-    as.scale = (float)((rand()%40)/10) + 0.5;
-    as.health = rand() % 200;
-    as.color = al_map_rgb(RAND_COLOR, RAND_COLOR, RAND_COLOR);
+    struct Asteroid as;
+    as.sx = (float)frand(max_x);
+    as.sy = (float)frand(max_y);
+    as.heading = (float)frand(360);
+    as.speed = ((float)frand(200)/10.0);
+    as.rot_velocity = (float)frand(20);
+    as.scale = ((float)frand(40))/10 + 0.5;
+    as.health = frand(200);
+    as.color = rand_color();
     as.next = NULL;
     return as;
 }

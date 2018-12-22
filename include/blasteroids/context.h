@@ -36,5 +36,6 @@ void blasteroids_asteroid_draw_life(GameContext *ctx);
 
 void blasteroids_bullet_shot(struct GameContext *ctx);
 
+void blasteroids_asteroid_generate_and_append(GameContext *ctx);
 
 #endif

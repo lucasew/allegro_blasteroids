@@ -19,7 +19,7 @@ void blasteroids_context_tick(GameContext *ctx) {
 void blasteroids_context_update(GameContext *ctx) {
     if (blasteroids_is_collision(ctx)) {
         if(0 != blasteroids_asteroid_gc(&ctx->asteroids)) // Ao matar um asteroide gerar outro, para dar mais emoção
-            blasteroids_asteroid_generate(ctx);
+            blasteroids_asteroid_generate_and_append(ctx);
         blasteroids_bullet_gc(&ctx->bullets);
     }
     blasteroids_fix_positions(ctx);
@@ -61,13 +61,10 @@ void blasteroids_asteroid_draw_life(GameContext *ctx) {
 }
 
 void blasteroids_bullet_shot(struct GameContext *ctx) {
-    Bullet bt;
-    bt.sx = ctx->ship.sx;
-    bt.sy = ctx->ship.sy;
-    bt.heading = ctx->ship.heading;
-    bt.speed = 1 + rand()%100;
-    bt.power = 1 + rand()%50;
-    bt.color = al_map_rgb(rand()%255, rand()%255, rand()%255);
-    bt.next = NULL;
-    blasteroids_bullet_append(&ctx->bullets, bt);   
+    blasteroids_bullet_append(&ctx->bullets, blasteroids_bullet_generate(ctx->ship));   
+}
+
+void blasteroids_asteroid_generate_and_append(GameContext *ctx) {
+    struct Asteroid as = blasteroids_asteroid_generate(blasteroids_display_w(ctx), blasteroids_display_h(ctx));
+    blasteroids_asteroid_append(&ctx->asteroids, as);
 }

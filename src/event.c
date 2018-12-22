@@ -62,7 +62,7 @@ void handle_event(ALLEGRO_EVENT *ev, GameContext *ctx) {
         ctx->HearthBeat = ctx->HearthBeat + 1;
         blasteroids_context_tick(ctx);
         if (!(ctx->HearthBeat%(10*FPS)))
-            blasteroids_asteroid_append(&ctx->asteroids, blasteroids_asteroid_generate(ctx));
+            blasteroids_asteroid_generate_and_append(ctx);
     }
     if(ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
         stop(0);

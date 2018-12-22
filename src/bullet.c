@@ -85,3 +85,16 @@ void blasteroids_bullet_gc(struct Bullet *b) {
         this = this->next;
     }
 }
+
+
+struct Bullet blasteroids_bullet_generate(struct Spaceship sp) {
+    Bullet bt;
+    bt.sx = sp.sx;
+    bt.sy = sp.sy;
+    bt.heading = sp.heading;
+    bt.speed = 1 + frand(100);
+    bt.power = 1 + frand(50);
+    bt.color = rand_color();
+    bt.next = NULL;
+    return bt;
+}

@@ -29,4 +29,8 @@ void blasteroids_destroy_bullet(struct Bullet *b);
 
 void blasteroids_bullet_gc(struct Bullet *b);
 
+#include <blasteroids/spaceship.h>
+
+struct Bullet blasteroids_bullet_generate(struct Spaceship sp);
+
 #endif
