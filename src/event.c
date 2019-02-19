@@ -1,14 +1,16 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
 
 #include <blasteroids/config.h>
 
 #include <blasteroids/context.h>
-#include <blasteroids/spaceship.h>
-#include <blasteroids/asteroid.h>
-#include <blasteroids/bullet.h>
-#include <blasteroids/utils.h>
 #include <blasteroids/main.h> // Função stop
 #include <blasteroids/event.h>
+#include <blasteroids/spaceship_struct.h>
+#include <blasteroids/spaceship_ops.h>
+#include <blasteroids/util_log.h>
+
 
 void event_loop_once(GameContext *ctx, ALLEGRO_EVENT *event) {
     al_wait_for_event(ctx->event_queue, event);
@@ -34,35 +36,35 @@ void handle_event(ALLEGRO_EVENT *ev, GameContext *ctx) {
     if(ev->type == ALLEGRO_EVENT_KEY_DOWN) {
         switch (ev->keyboard.keycode) {
             case ALLEGRO_KEY_LEFT:
-                blasteroids_ship_left(&ctx->ship);
-                blasteroids_context_update(ctx);
+                blasteroids_ship__left(&ctx->ship);
+                blasteroids_context__update(ctx);
                 return;
             case ALLEGRO_KEY_RIGHT:
-                blasteroids_ship_right(&ctx->ship);
-                blasteroids_context_update(ctx);
+                blasteroids_ship__right(&ctx->ship);
+                blasteroids_context__update(ctx);
                 return;
             case ALLEGRO_KEY_UP:
-                blasteroids_ship_up(&ctx->ship);
-                blasteroids_context_update(ctx);
+                blasteroids_ship__up(&ctx->ship);
+                blasteroids_context__update(ctx);
                 return;
             case ALLEGRO_KEY_DOWN:
-                blasteroids_ship_down(&ctx->ship);
-                blasteroids_context_update(ctx);
+                blasteroids_ship__down(&ctx->ship);
+                blasteroids_context__update(ctx);
                 return;
             case ALLEGRO_KEY_ESCAPE:
                 info("Sair");
                 stop(0);
                 return;
             case ALLEGRO_KEY_SPACE:
-                /*if (ctx->HearthBeat%2)*/ blasteroids_bullet_shot(ctx);
+                /*if (ctx->HearthBeat%2)*/ blasteroids_bullet__shot(ctx);
                 return;
         }
     }
     if(ev->type == ALLEGRO_EVENT_TIMER) {
         ctx->HearthBeat = ctx->HearthBeat + 1;
-        blasteroids_context_tick(ctx);
+        blasteroids_context__tick(ctx);
         if (!(ctx->HearthBeat%(10*FPS)))
-            blasteroids_asteroid_generate_and_append(ctx);
+            blasteroids_asteroid__generate_and_append(ctx);
     }
     if(ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
         stop(0);

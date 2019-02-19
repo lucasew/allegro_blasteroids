@@ -2,30 +2,32 @@ cmake_minimum_required(VERSION 3.10)
 
 project(blasteroids LANGUAGES C)
 
+include(CheckIncludeFiles)
+
+check_include_files("allegro5/allegro.h" HAVE_ALLEGRO)
+if(NOT HAVE_ALLEGRO)
+    message(FATAL_ERROR "Allegro5 not installed")
+endif()
+
 include_directories(include/)
 
-add_library(blasteroids_utils
-    src/utils/draw.c
-    src/utils/signal.c
-    src/utils/rand.c
+file(GLOB_RECURSE PROJECT_FILES
+    "src/*.c"
 )
 
-add_library(blasteroids_core
-    src/asteroid.c
-    src/bullet.c
-    src/spaceship.c
-    src/collision.c
-    src/context.c
-    src/event.c
-    src/pos_fixer.c
-    src/text.c
+add_executable(blasteroids 
+    main.c
+    ${PROJECT_FILES}
 )
 
-add_executable(blasteroids main.c)
-
-target_link_libraries(blasteroids blasteroids_core blasteroids_utils)
-target_link_libraries(blasteroids allegro allegro_primitives allegro_font allegro_ttf -lm)
-#SET(BUILD_SHARED_LIBS OFF)
+#Libs externas
+target_link_libraries(blasteroids
+    allegro
+    allegro_primitives
+    allegro_font
+    allegro_ttf
+    -lm
+)
 
 # Mandar o arquivo de fonte junto para o target
 add_custom_command(

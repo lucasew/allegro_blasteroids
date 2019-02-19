@@ -6,15 +6,20 @@
 
 #include <blasteroids/config.h>
 
+#include <blasteroids/util_signal.h>
+#include <blasteroids/util_log.h>
+
 #include <blasteroids/context.h>
-#include <blasteroids/asteroid.h>
-#include <blasteroids/spaceship.h>
-#include <blasteroids/utils.h>
 #include <blasteroids/event.h>
 #include <blasteroids/collision.h>
-#include <blasteroids/text.h>
 #include <blasteroids/pos_fixer.h>
-#include <blasteroids/bullet.h>
+
+#include <blasteroids/asteroid_struct.h>
+#include <blasteroids/asteroid_ops.h>
+#include <blasteroids/bullet_struct.h>
+#include <blasteroids/bullet_ops.h>
+#include <blasteroids/spaceship_struct.h>
+
 
 #include <blasteroids/main.h>
 
@@ -104,9 +109,9 @@ void handle_shutdown() {
     debug("Destroy queue");
     al_destroy_event_queue(ctx.event_queue);
     debug("Free asteroids");
-    blasteroids_destroy_asteroid(&ctx.asteroids);
+    blasteroids_asteroid__destroy(&ctx.asteroids);
     debug("Free bullets");
-    blasteroids_destroy_bullet(&ctx.bullets);
+    blasteroids_bullet__destroy(&ctx.bullets);
     debug("Destroy display");
     al_destroy_display(ctx.display);
     debug("Destroy font");

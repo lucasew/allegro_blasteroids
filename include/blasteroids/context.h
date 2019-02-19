@@ -3,9 +3,9 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
-#include <blasteroids/spaceship.h>
-#include <blasteroids/asteroid.h>
-#include <blasteroids/bullet.h>
+#include <blasteroids/asteroid_struct.h>
+#include <blasteroids/spaceship_struct.h>
+#include <blasteroids/bullet_struct.h>
 
 struct GameContext {
     ALLEGRO_DISPLAY *display;
@@ -22,20 +22,20 @@ struct GameContext {
 
 typedef struct GameContext GameContext;
 
-void blasteroids_context_tick(GameContext *ctx);
+void blasteroids_context__tick(GameContext *ctx);
 
-void blasteroids_context_update(GameContext *ctx);
+void blasteroids_context__update(GameContext *ctx);
 
-void blasteroids_context_draw(GameContext *ctx);
+void blasteroids_context__draw(GameContext *ctx);
 
-int blasteroids_display_w(GameContext *ctx);
+int blasteroids_display__w(GameContext *ctx);
 
-int blasteroids_display_h(GameContext *ctx);
+int blasteroids_display__h(GameContext *ctx);
 
-void blasteroids_asteroid_draw_life(GameContext *ctx);
+void blasteroids_asteroid__draw_life(GameContext *ctx);
 
-void blasteroids_bullet_shot(struct GameContext *ctx);
+void blasteroids_bullet__shot(GameContext *ctx);
 
-void blasteroids_asteroid_generate_and_append(GameContext *ctx);
+void blasteroids_asteroid__generate_and_append(GameContext *ctx);
 
 #endif

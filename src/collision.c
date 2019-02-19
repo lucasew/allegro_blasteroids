@@ -1,16 +1,11 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-
 #include <blasteroids/config.h>
-#include <blasteroids/main.h>
-#include <blasteroids/asteroid.h>
-#include <blasteroids/spaceship.h>
-#include <blasteroids/bullet.h>
-#include <blasteroids/utils/draw.h>
 #include <blasteroids/context.h>
-#include <blasteroids/utils.h>
-
-#include <blasteroids/collision.h>
+#include <blasteroids/util_draw.h>
+#include <blasteroids/util_log.h>
+#include <blasteroids/asteroid_struct.h>
+#include <blasteroids/asteroid_draw.h>
+#include <blasteroids/bullet_struct.h>
+#include <blasteroids/bullet_list.h>
 
 int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
     int collisions = 0;
@@ -24,7 +19,7 @@ int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
     do {
         ax = this->sx;
         ay = this->sy;
-        cur_distance = get_distance(sx, sy, ax, ay);
+        cur_distance = blasteroids_get_distance(sx, sy, ax, ay);
         min_distance = 10 + 22*this->scale;
 #ifdef DEBUG_COLLISION_GRAPH
         // Linha entre o asteroide e a nave
@@ -48,19 +43,19 @@ int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
 
 int blasteroids_check_collision_asteroid_bullet(GameContext *ctx) {
     int collisions = 0;
-    Asteroid *as = ctx->asteroids.next;
-    Bullet *bu = ctx->bullets.next;
+    struct Asteroid *as = ctx->asteroids.next;
+    struct Bullet *bu = ctx->bullets.next;
     if (as == NULL || bu == NULL) return collisions;
     float distancia;
     while (as != NULL) {
         bu = &ctx->bullets;
         while (bu != NULL) {
-            distancia = get_distance(as->sx, as->sy, bu->sx, bu->sy);
+            distancia = blasteroids_get_distance(as->sx, as->sy, bu->sx, bu->sy);
             if (distancia < (22*as->scale)) {
                 ctx->score = ctx->score + bu->power;
                 as->health = as->health - bu->power;
                 bu->power = 0;
-                blasteroids_bullet_gc(&ctx->bullets);
+                blasteroids_bullet__gc(&ctx->bullets);
                 collisions++;
             }
             bu = bu->next;
@@ -71,13 +66,10 @@ int blasteroids_check_collision_asteroid_bullet(GameContext *ctx) {
 }
 
 int blasteroids_is_collision(GameContext *ctx) {
-#ifndef ASTEROID_SEGMENTS
-    error("Constantes não definidas em teste de colisão");
-#endif
     int collisions = 0;
     collisions += blasteroids_check_collision_asteroid_bullet(ctx);
     collisions += blasteroids_check_collision_asteroid_spaceship(ctx);
     if (collisions)
-        debug("Collisions %i", collisions);
+        debug("ACONTECERAM COLISÕES: %i", collisions);
     return collisions;
 }
