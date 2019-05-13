@@ -5,6 +5,6 @@
 
 void blasteroids_bullet__draw(struct Bullet *b);
 
-void blasteroids_bullet__draw_all(struct Bullet *b);
+void blasteroids_bullet__draw_all(struct Bullet **b);
 
 #endif

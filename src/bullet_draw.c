@@ -18,8 +18,10 @@ void blasteroids_bullet__draw(struct Bullet *b) {
     al_draw_line(0, -1, 1, 0, b->color, 2.0f);
 }
 
-void blasteroids_bullet__draw_all(struct Bullet *b) {
-    struct Bullet *tmp = b->next;
+void blasteroids_bullet__draw_all(struct Bullet **b) {
+    if (b == NULL) return;
+    if (*b == NULL) return;
+    struct Bullet *tmp = *b;
     while (tmp != NULL) {
         blasteroids_bullet__draw(tmp);
         tmp = tmp->next;

@@ -13,8 +13,8 @@ struct GameContext {
     ALLEGRO_TIMER *timer;
     ALLEGRO_FONT *font;
     struct Spaceship ship;
-    struct Asteroid asteroids;
-    struct Bullet bullets;
+    struct Asteroid **asteroids;
+    struct Bullet **bullets;
     short lifes;
     int HearthBeat;
     int score;

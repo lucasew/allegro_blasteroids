@@ -73,24 +73,13 @@ int main() {
     sp.color = al_map_rgb(255, 255, 0);
     sp.health = 100;
     ctx.ship = sp;
-    // Criando asteroide genesis, para facilitar o trabalho
-    ctx.asteroids.sx = 0;
-    ctx.asteroids.sy = 0;
-    ctx.asteroids.heading = 0;
-    ctx.asteroids.speed = 0;
-    ctx.asteroids.rot_velocity = 0;
-    ctx.asteroids.scale = 0;
-    ctx.asteroids.health = 9999;
-    ctx.asteroids.color = al_map_rgb(0, 0, 0);
-    ctx.asteroids.next = NULL;
-    // Bullet (genesis, para facilitar)
-    ctx.bullets.sx = -100;
-    ctx.bullets.sy = -100;
-    ctx.bullets.heading = 0;
-    ctx.bullets.speed = 0;
-    ctx.bullets.power = 0;
-    ctx.bullets.color = al_map_rgb(255, 255, 255);
-    ctx.bullets.next = NULL;
+    ctx.asteroids = malloc(sizeof(struct Asteroid*));
+    *ctx.asteroids = NULL;
+    blasteroids_asteroid__generate_and_append(&ctx);
+    ctx.bullets = malloc(sizeof(struct Bullet*));
+    *ctx.bullets = NULL;
+    running = ctx.asteroids && ctx.bullets; // Se algum deles for falso/NULL, fechar o programa
+    if (!running) handle_shutdown(SIGINT);
     // Event loop in main thread
     ALLEGRO_EVENT event; // Apenas para não ter de redeclarar a cada iteração
     while(running) {
@@ -109,14 +98,16 @@ void handle_shutdown() {
     debug("Destroy queue");
     al_destroy_event_queue(ctx.event_queue);
     debug("Free asteroids");
-    blasteroids_asteroid__destroy(&ctx.asteroids);
+    blasteroids_asteroid__destroy(ctx.asteroids);
     debug("Free bullets");
-    blasteroids_bullet__destroy(&ctx.bullets);
+    blasteroids_bullet__destroy(ctx.bullets);
     debug("Destroy display");
     al_destroy_display(ctx.display);
     debug("Destroy font");
     al_destroy_font(ctx.font);
     //raise(SIGKILL);
+    free(ctx.asteroids);
+    free(ctx.bullets);
     exit(1);
 }
 

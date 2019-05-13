@@ -5,10 +5,11 @@
 #include <blasteroids/util_log.h>
 
 
-void blasteroids_bullet__gc(struct Bullet *b) {
+void blasteroids_bullet__gc(struct Bullet **b) {
     debug("Removendo tiros destruidos da memória...");
     if (b == NULL) return;
-    struct Bullet *dummy, *previous = b, *this = b->next;
+    if (*b == NULL) return;
+    struct Bullet *dummy, *previous = *b, *this = (*b)->next;
     while (this != NULL) {
         if (this->power <= 0) {
             dummy = this;
@@ -21,18 +22,30 @@ void blasteroids_bullet__gc(struct Bullet *b) {
     }
 }
 
-void blasteroids_bullet__append(struct Bullet *old, struct Bullet new) { // Eu dou malloc sozinho
+void blasteroids_bullet__append(struct Bullet **old, struct Bullet new) {
     blasteroids_bullet__log("append", &new);
-    struct Bullet *tmp = malloc(sizeof(struct Bullet));
-    *tmp = new;
-    if (old->next != NULL) {
-        tmp->next = old->next;
+    if (old == NULL) return;
+    if (*old == NULL ) {
+        *old = malloc(sizeof(struct Bullet));
+        if (*old == NULL) {
+            return;
+        }
+        *(*old) = new;
+        (*old)->next = NULL;
+        return;
     }
-    old->next = tmp;
+    struct Bullet *newp = malloc(sizeof(struct Bullet));
+    if (newp == NULL)
+        return;
+    *newp = new;
+    newp->next = *old;
+    *old = newp;
 }
 
-void blasteroids_bullet__update_all(struct Bullet *b, int HearthBeat) {
-    struct Bullet *this = b->next; // Next ignora aquele bullet genesis
+void blasteroids_bullet__update_all(struct Bullet **b, int HearthBeat) {
+    if(b == NULL) return;
+    if(*b == NULL) return;
+    struct Bullet *this = *b;
     while (this != NULL) {
         blasteroids_bullet__update(this, HearthBeat);
         this = this->next;

@@ -3,10 +3,10 @@
 
 #include <blasteroids/asteroid_struct.h>
 
-void blasteroids_asteroid__update_all(struct Asteroid *a);
+void blasteroids_asteroid__update_all(struct Asteroid **a);
 
-void blasteroids_asteroid__append(struct Asteroid *old, struct Asteroid new);
+void blasteroids_asteroid__append(struct Asteroid **old, struct Asteroid new);
 
-int blasteroids_asteroid__gc(struct Asteroid *a);
+int blasteroids_asteroid__gc(struct Asteroid **a);
 
 #endif

@@ -4,19 +4,22 @@
 #include <blasteroids/util_log.h>
 #include <blasteroids/asteroid_struct.h>
 #include <blasteroids/asteroid_draw.h>
+#include <blasteroids/asteroid_list.h>
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/bullet_list.h>
 
 int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
     int collisions = 0;
-    if (ctx->asteroids.next == NULL) return collisions;
+    if (ctx->asteroids == NULL) return 0;
+    if (*ctx->asteroids == NULL) return 0;
+    if ((*ctx->asteroids)->next == NULL) return collisions;
     float sx, sy; // Centro da nave
     float ax, ay; // Centro de um asteroide
     sx = ctx->ship.sx;
     sy = ctx->ship.sy;
     float cur_distance, min_distance;
-    Asteroid *this = &ctx->asteroids;
-    do {
+    Asteroid *this = *ctx->asteroids;
+    while (this != NULL) {
         ax = this->sx;
         ay = this->sy;
         cur_distance = blasteroids_get_distance(sx, sy, ax, ay);
@@ -37,30 +40,35 @@ int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
             }
         }
         this = this->next;
-    } while(this->next != NULL);
+    }
     return collisions;
 }
 
 int blasteroids_check_collision_asteroid_bullet(GameContext *ctx) {
+    if (ctx->asteroids == NULL)
+        return 0;
+    if (ctx->bullets == NULL)
+        return 0;
     int collisions = 0;
-    struct Asteroid *as = ctx->asteroids.next;
-    struct Bullet *bu = ctx->bullets.next;
+    struct Asteroid *as = (*ctx->asteroids);
+    struct Bullet *bu = (*ctx->bullets);
     if (as == NULL || bu == NULL) return collisions;
     float distancia;
-    while (as != NULL) {
-        bu = &ctx->bullets;
-        while (bu != NULL) {
+    while (bu != NULL) {
+        while (as != NULL) {
             distancia = blasteroids_get_distance(as->sx, as->sy, bu->sx, bu->sy);
             if (distancia < (22*as->scale)) {
                 ctx->score = ctx->score + bu->power;
                 as->health = as->health - bu->power;
-                bu->power = 0;
-                blasteroids_bullet__gc(&ctx->bullets);
+                struct Bullet *dummy = bu->next;
+                if (bu->next != NULL)
+                    *bu = *bu->next;
+                free(dummy);
                 collisions++;
             }
-            bu = bu->next;
+            as = as->next;
         }
-        as = as->next;
+        bu = bu->next;
     }
     return collisions;
 }
@@ -69,7 +77,10 @@ int blasteroids_is_collision(GameContext *ctx) {
     int collisions = 0;
     collisions += blasteroids_check_collision_asteroid_bullet(ctx);
     collisions += blasteroids_check_collision_asteroid_spaceship(ctx);
-    if (collisions)
+    if (collisions) {
         debug("ACONTECERAM COLISÕES: %i", collisions);
+        blasteroids_bullet__gc(ctx->bullets);
+        blasteroids_asteroid__gc(ctx->asteroids);
+    }
     return collisions;
 }

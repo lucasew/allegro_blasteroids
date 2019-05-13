@@ -13,16 +13,20 @@ void blasteroids_fix_positions(GameContext *ctx) {
     int h = blasteroids_display__h(ctx);
     constraint2zero(&ctx->ship.sx, w);
     constraint2zero(&ctx->ship.sy, h);
-    Asteroid *adummy = ctx->asteroids.next;
-    while (adummy != NULL) {
-        constraint2zero(&adummy->sx, w);
-        constraint2zero(&adummy->sy, h);
-        adummy = adummy->next;
+    if (ctx->asteroids && *ctx->asteroids) {
+        Asteroid *adummy = *ctx->asteroids;
+        while (adummy != NULL) {
+            constraint2zero(&adummy->sx, w);
+            constraint2zero(&adummy->sy, h);
+            adummy = adummy->next;
+        }
     }
-    Bullet *bdummy = ctx->bullets.next;
-    while (bdummy != NULL) {
-        constraint2zero(&bdummy->sx, w);
-        constraint2zero(&bdummy->sy, h);
-        bdummy = bdummy->next;
+    if (ctx->bullets != NULL && *ctx->bullets != NULL) {
+        Bullet *bdummy = *ctx->bullets;
+        while (bdummy != NULL) {
+            constraint2zero(&bdummy->sx, w);
+            constraint2zero(&bdummy->sy, h);
+            bdummy = bdummy->next;
+        }
     }
 }

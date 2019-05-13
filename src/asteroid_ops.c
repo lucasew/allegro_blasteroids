@@ -4,6 +4,7 @@
 #include <blasteroids/util_rand.h>
 
 void blasteroids_asteroid__update(struct Asteroid *a) {
+    if (a == NULL) return;
     blasteroids_asteroid__log("before", a);
     a->heading = a->heading + a->rot_velocity/FPS;
     a->sx = a->sx + blasteroids_get_delta_x(a->speed, a->heading)/FPS;
@@ -11,12 +12,13 @@ void blasteroids_asteroid__update(struct Asteroid *a) {
     blasteroids_asteroid__log("after", a);
 }
 
-void blasteroids_asteroid__destroy(struct Asteroid *a) {
-    struct Asteroid *dummy;
-    a = a->next; // Primeiro asteroide não faz malloc
-    while (a != NULL) {
-        dummy = a;
-        a = a->next;
+void blasteroids_asteroid__destroy(struct Asteroid **a) {
+    if (a == NULL) return;
+    if (*a == NULL) return;
+    struct Asteroid *dummy, *this = *a;
+    while (this != NULL) {
+        dummy = this;
+        this = this->next;
         free(dummy);
     }
 }

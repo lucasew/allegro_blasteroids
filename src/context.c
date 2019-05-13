@@ -16,17 +16,17 @@
 #include <blasteroids/context.h>
 
 void blasteroids_context__tick(GameContext *ctx) {
-    blasteroids_asteroid__update_all(&ctx->asteroids);
-    blasteroids_bullet__update_all(&ctx->bullets, ctx->HearthBeat);
+    blasteroids_asteroid__update_all(ctx->asteroids);
+    blasteroids_bullet__update_all(ctx->bullets, ctx->HearthBeat);
     blasteroids_context__update(ctx);
     blasteroids_context__draw(ctx);
 }
 
 void blasteroids_context__update(GameContext *ctx) {
     if (blasteroids_is_collision(ctx)) {
-        if(0 != blasteroids_asteroid__gc(&ctx->asteroids)) // Ao matar um asteroide gerar outro, para dar mais emoção
+        if(0 != blasteroids_asteroid__gc(ctx->asteroids)) // Ao matar um asteroide gerar outro, para dar mais emoção
             blasteroids_asteroid__generate_and_append(ctx);
-        blasteroids_bullet__gc(&ctx->bullets);
+        blasteroids_bullet__gc(ctx->bullets);
     }
     blasteroids_fix_positions(ctx);
 }
@@ -34,9 +34,9 @@ void blasteroids_context__update(GameContext *ctx) {
 void blasteroids_context__draw(GameContext *ctx) {
     al_flip_display();
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    blasteroids_ship__draw(&ctx->ship);
-    blasteroids_asteroid__draw_all(&ctx->asteroids);
-    blasteroids_bullet__draw_all(&ctx->bullets);
+    blasteroids_ship__draw(ctx->ship);
+    blasteroids_asteroid__draw_all(ctx->asteroids);
+    blasteroids_bullet__draw_all(ctx->bullets);
     blasteroids_life__draw(ctx);
     blasteroids_score__draw(ctx);
     blasteroids_asteroid__draw_life(ctx);
@@ -54,8 +54,9 @@ int blasteroids_display__h(GameContext *ctx) {
 }
 
 void blasteroids_asteroid__draw_life(GameContext *ctx) {
-    if (ctx->asteroids.next == NULL) return;
-    struct Asteroid *a = ctx->asteroids.next; // O primeiro só tá lá pra facilitar
+    if (ctx->asteroids == NULL) return;
+    if ((*ctx->asteroids) == NULL) return;
+    struct Asteroid *a = *ctx->asteroids;
     while (a != NULL) {
         ALLEGRO_TRANSFORM t;
         al_identity_transform(&t);
@@ -67,10 +68,10 @@ void blasteroids_asteroid__draw_life(GameContext *ctx) {
 }
 
 void blasteroids_bullet__shot(GameContext *ctx) {
-    blasteroids_bullet__append(&ctx->bullets, blasteroids_bullet__generate(ctx->ship));   
+    blasteroids_bullet__append(ctx->bullets, blasteroids_bullet__generate(ctx->ship));
 }
 
 void blasteroids_asteroid__generate_and_append(GameContext *ctx) {
     struct Asteroid as = blasteroids_asteroid__generate(blasteroids_display__w(ctx), blasteroids_display__h(ctx));
-    blasteroids_asteroid__append(&ctx->asteroids, as);
+    blasteroids_asteroid__append(ctx->asteroids, as);
 }

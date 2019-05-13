@@ -3,6 +3,6 @@
 
 #include <blasteroids/spaceship_struct.h>
 
-void blasteroids_ship__draw(Spaceship *s);
+void blasteroids_ship__draw(Spaceship s);
 
 #endif

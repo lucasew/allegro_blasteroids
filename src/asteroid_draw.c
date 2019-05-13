@@ -19,6 +19,7 @@ const float asteroid_points[][2] = {
 };
 
 void blasteroids_asteroid__draw(struct Asteroid *a) {
+    if (a == NULL) return;
     ALLEGRO_TRANSFORM transform;
     al_identity_transform(&transform);
     al_rotate_transform(&transform, deg2rad(a->heading));
@@ -35,8 +36,10 @@ void blasteroids_asteroid__draw(struct Asteroid *a) {
     }
 }
 
-void blasteroids_asteroid__draw_all(struct Asteroid *a) {
-    struct Asteroid *tmp = a;
+void blasteroids_asteroid__draw_all(struct Asteroid **a) {
+    if (a == NULL) return;
+    if (*a == NULL) return;
+    struct Asteroid *tmp = *a;
     while (tmp != NULL) {
         blasteroids_asteroid__draw(tmp);
         tmp = tmp->next;
