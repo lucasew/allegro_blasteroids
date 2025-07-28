@@ -3,6 +3,7 @@
 , allegro5
 , cmake
 , ninja
+, pkg-config
 , self
 }:
 
@@ -14,7 +15,7 @@ stdenv.mkDerivation {
 
   buildInputs = [ allegro5 ];
 
-  nativeBuildInputs = [ cmake ninja ];
+  nativeBuildInputs = [ cmake ninja pkg-config ];
 
   meta = {
     mainProgram = "blasteroids";
