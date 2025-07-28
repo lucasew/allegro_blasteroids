@@ -2,12 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(blasteroids LANGUAGES C)
 
-include(CheckIncludeFiles)
+find_package(PkgConfig REQUIRED)
 
-check_include_files("allegro5/allegro.h" HAVE_ALLEGRO)
-if(NOT HAVE_ALLEGRO)
-    message(FATAL_ERROR "Allegro5 not installed")
-endif()
+pkg_search_module(ALLEGRO5 REQUIRED allegro-5)
 
 include_directories(include/)
 
@@ -22,11 +19,11 @@ add_executable(blasteroids
 
 #Libs externas
 target_link_libraries(blasteroids
+    -lm
     allegro
     allegro_primitives
     allegro_font
     allegro_ttf
-    -lm
 )
 
 # Mandar o arquivo de fonte junto para o target

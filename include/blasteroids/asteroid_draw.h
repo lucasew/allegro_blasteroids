@@ -2,8 +2,8 @@
 #define _BLASTEROIDS_ASTEROID_DRAW
 
 #include <blasteroids/asteroid_struct.h>
-const int QTD_POINTS;
-const float asteroid_points;
+extern const int QTD_POINTS;
+extern const float asteroid_points[][2];
 
 void blasteroids_asteroid__draw(struct Asteroid *a);
 
