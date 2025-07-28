@@ -13,7 +13,7 @@
       };
     in {
     packages = {
-      default = pkgs.python3Packages.callPackage ./package.nix { };
+      default = pkgs.python3Packages.callPackage ./package.nix { inherit self; };
     };
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [

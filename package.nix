@@ -3,11 +3,12 @@
 , allegro5
 , cmake
 , ninja
+, self
 }:
 
 stdenv.mkDerivation {
   pname = "allegro_blasteroids";
-  version = "0.1";
+  version = "${builtins.readFile ./version.txt}-${self.shortRev or self.dirtyShortRev or "rev"}";
 
   src = ./.;
 
