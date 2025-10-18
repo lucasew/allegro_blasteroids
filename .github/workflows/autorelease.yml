@@ -6,6 +6,9 @@ on:
     - master
     tags:
     - '*'
+  pull_request:
+    branches:
+    - master
   workflow_dispatch:
     inputs:
       new_version:
@@ -34,9 +37,11 @@ jobs:
         git config user.email actions-bot@users.noreply.github.com
 
     - name: Update Nix flake
+      if: github.event_name != 'pull_request'
       run: nix flake update
 
     - name: Create Pull Request if there is new stuff from updaters
+      if: github.event_name != 'pull_request'
       uses: peter-evans/create-pull-request@v7
       id: pr_create
       with:
@@ -48,6 +53,7 @@ jobs:
           Changes caused from update scripts
 
     - name: Stop if a pull request was created
+      if: github.event_name != 'pull_request'
       env:
         PR_NUMBER: ${{ steps.pr_create.outputs.pull-request-number }}
       run: |
@@ -58,6 +64,7 @@ jobs:
     - name: Try to build it
       run: 'nix build .#'
     - name: Make release if everything looks right
+      if: github.event_name != 'pull_request'
       env:
         NEW_VERSION: ${{ github.event.inputs.new_version }}
       run: |
@@ -68,7 +75,7 @@ jobs:
         fi
 
     - name: Create relase
-      if: env.RELEASE_VERSION != ''
+      if: github.event_name != 'pull_request' && env.RELEASE_VERSION != ''
       id: release
       uses: elgohr/Github-Release-Action@v5
       env:
@@ -78,7 +85,7 @@ jobs:
           title: Release ${{ env.RELEASE_VERSION }}
 
     - uses: svenstaro/upload-release-action@v2
-      if: env.RELEASE_VERSION != ''
+      if: github.event_name != 'pull_request' && env.RELEASE_VERSION != ''
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/*
