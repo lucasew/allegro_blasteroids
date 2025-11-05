@@ -38,8 +38,8 @@ modules:
       - install -Dm644 ../org.github.lucasew.Blasteroids.desktop /app/share/applications/org.github.lucasew.Blasteroids.desktop
       # Install appdata
       - install -Dm644 ../org.github.lucasew.Blasteroids.appdata.xml /app/share/metainfo/org.github.lucasew.Blasteroids.appdata.xml
-      # Install icon (using one of the screenshots as a placeholder)
-      - install -Dm644 ../doc/jogo.png /app/share/icons/hicolor/512x512/apps/org.github.lucasew.Blasteroids.png
+      # Note: Icon not included - add a proper 512x512 or smaller icon when available
+      # The screenshot (doc/jogo.png) is 1366x768, too large for hicolor icon theme
     sources:
       - type: dir
         path: .

@@ -2,7 +2,6 @@
 Name=Blasteroids
 Comment=A simple game where the goal is to destroy as many asteroids as possible
 Exec=blasteroids
-Icon=org.github.lucasew.Blasteroids
 Terminal=false
 Type=Application
 Categories=Game;ArcadeGame;
