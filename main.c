@@ -3,7 +3,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_memfile.h>
 
+#include "embedded_font.h"
 #include <blasteroids/config.h>
 
 #include <blasteroids/util_signal.h>
@@ -60,10 +62,16 @@ int main() {
     ctx.display = al_create_display(600, 600);
     al_set_window_title(ctx.display, WindowTitle); // Título da janela
     al_register_event_source(ctx.event_queue, al_get_display_event_source(ctx.display));
-    // Fonte
-    ctx.font = al_load_font("./blasteroids_font.ttf", 24, 0);
-    if (ctx.font == NULL)
-        error("Arquivo font.ttf não encontrado.");
+    // Fonte (carregada da memória - embutida no binário)
+    // Keep memfile open while font is in use - FreeType may need to access the data
+    ctx.font_memfile = al_open_memfile((void*)embedded_font_data, embedded_font_size, "rb");
+    if (!ctx.font_memfile)
+        error("Não foi possível criar memfile para fonte embutida.");
+    ctx.font = al_load_ttf_font_f(ctx.font_memfile, "embedded_font.ttf", 24, 0);
+    if (ctx.font == NULL) {
+        al_fclose(ctx.font_memfile);
+        error("Não foi possível carregar fonte embutida.");
+    }
     // Criando spaceship de exemplo
     Spaceship sp;
     sp.sx = 200;
@@ -105,6 +113,9 @@ void handle_shutdown() {
     al_destroy_display(ctx.display);
     debug("Destroy font");
     al_destroy_font(ctx.font);
+    debug("Close font memfile");
+    if (ctx.font_memfile)
+        al_fclose(ctx.font_memfile);
     //raise(SIGKILL);
     free(ctx.asteroids);
     free(ctx.bullets);
