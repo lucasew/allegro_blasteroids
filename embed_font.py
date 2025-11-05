@@ -23,10 +23,16 @@ def main():
         f.write(f"static const unsigned char embedded_font_data[] = {{\n")
 
         # Write bytes in rows of 12
+        bytes_written = 0
         for i in range(0, len(data), 12):
             chunk = data[i:i+12]
             hex_values = ', '.join(f'0x{b:02x}' for b in chunk)
-            f.write(f"    {hex_values},\n")
+            bytes_written += len(chunk)
+            # Only add comma if not the last line
+            if bytes_written < len(data):
+                f.write(f"    {hex_values},\n")
+            else:
+                f.write(f"    {hex_values}\n")
 
         f.write("};\n\n")
         f.write(f"static const unsigned int embedded_font_size = {len(data)};\n\n")
