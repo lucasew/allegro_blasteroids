@@ -1,0 +1,47 @@
+app-id: org.github.lucasew.Blasteroids
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: blasteroids
+
+finish-args:
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --share=ipc
+
+modules:
+  # Allegro 5 library
+  - name: allegro
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DWANT_DOCS=OFF
+      - -DWANT_EXAMPLES=OFF
+      - -DWANT_TESTS=OFF
+    sources:
+      - type: archive
+        url: https://github.com/liballeg/allegro5/releases/download/5.2.9.1/allegro-5.2.9.1.tar.gz
+        sha256: c1e3b319d99cb453b39d393572ba2b9f3de42a96de424aee7d4a1abceaaa970c
+
+  # The game itself
+  - name: blasteroids
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    build-commands:
+      # Install the binary
+      - install -Dm755 blasteroids /app/bin/blasteroids
+      # Install the font file
+      - install -Dm644 blasteroids_font.ttf /app/bin/blasteroids_font.ttf
+      # Install desktop file
+      - install -Dm644 org.github.lucasew.Blasteroids.desktop /app/share/applications/org.github.lucasew.Blasteroids.desktop
+      # Install appdata
+      - install -Dm644 org.github.lucasew.Blasteroids.appdata.xml /app/share/metainfo/org.github.lucasew.Blasteroids.appdata.xml
+      # Install icon (using one of the screenshots as a placeholder)
+      - install -Dm644 doc/jogo.png /app/share/icons/hicolor/512x512/apps/org.github.lucasew.Blasteroids.png
+    sources:
+      - type: git
+        url: https://github.com/lucasew/allegro_blasteroids.git
+        tag: v0.2.1
+        commit: HEAD

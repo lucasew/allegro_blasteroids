@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.github.lucasew.Blasteroids</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Blasteroids</name>
+  <summary>Destroy as many asteroids as possible</summary>
+  <description>
+    <p>
+      A simple game where the goal is to destroy as many asteroids as possible.
+      The game generates a new asteroid every 10 seconds with random health, rotation speed, and velocity.
+      The player destroys asteroids by shooting from the spaceship using the space key.
+      Shots have random speed and damage.
+    </p>
+    <p>
+      You can shoot like Rambo to destroy the asteroids, but be aware that shots lose 1 damage per second,
+      and they can even have negative damage and increase the life of asteroids!
+    </p>
+    <p>
+      Collisions are calculated by distance, so it's possible that visually a bullet passes through an
+      asteroid without dealing damage.
+    </p>
+    <p>
+      When you die, the game closes, returning the game time and how many points you scored.
+    </p>
+  </description>
+  <launchable type="desktop-id">org.github.lucasew.Blasteroids.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/lucasew/allegro_blasteroids/master/doc/jogo.png</image>
+      <caption>Main game screen</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/lucasew/allegro_blasteroids/master/doc/gameover.png</image>
+      <caption>Game over screen</caption>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/lucasew/allegro_blasteroids</url>
+  <url type="bugtracker">https://github.com/lucasew/allegro_blasteroids/issues</url>
+  <developer_name>Lucas Eduardo Wendt</developer_name>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.2.1" date="2024-01-01"/>
+  </releases>
+</component>
