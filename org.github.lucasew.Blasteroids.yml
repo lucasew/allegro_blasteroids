@@ -32,18 +32,6 @@ modules:
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
     post-install:
-      # Rename the binary to blasteroids-bin
-      - mv /app/bin/blasteroids /app/bin/blasteroids-bin
-      # Create wrapper script that changes to /app/bin before running
-      - |
-        cat > /app/bin/blasteroids << 'EOF'
-        #!/bin/bash
-        cd /app/bin
-        exec /app/bin/blasteroids-bin "$@"
-        EOF
-      - chmod +x /app/bin/blasteroids
-      # Install the font file (from source directory)
-      - install -Dm644 ../blasteroids_font.ttf /app/bin/blasteroids_font.ttf
       # Install desktop file
       - install -Dm644 ../org.github.lucasew.Blasteroids.desktop /app/share/applications/org.github.lucasew.Blasteroids.desktop
       # Install appdata

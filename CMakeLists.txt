@@ -7,14 +7,24 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(ALLEGRO5 REQUIRED allegro-5)
 
 include_directories(include/)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 file(GLOB_RECURSE PROJECT_FILES
     "src/*.c"
 )
 
-add_executable(blasteroids 
+# Generate embedded font header
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/embedded_font.h
+    COMMAND ${CMAKE_COMMAND} -E env python3 ${CMAKE_SOURCE_DIR}/embed_font.py ${CMAKE_SOURCE_DIR}/blasteroids_font.ttf ${CMAKE_CURRENT_BINARY_DIR}/embedded_font.h
+    DEPENDS ${CMAKE_SOURCE_DIR}/blasteroids_font.ttf ${CMAKE_SOURCE_DIR}/embed_font.py
+    COMMENT "Embedding font data into C header"
+)
+
+add_executable(blasteroids
     main.c
     ${PROJECT_FILES}
+    ${CMAKE_CURRENT_BINARY_DIR}/embedded_font.h
 )
 
 #Libs externas
@@ -24,12 +34,6 @@ target_link_libraries(blasteroids
     allegro_primitives
     allegro_font
     allegro_ttf
-)
-
-# Mandar o arquivo de fonte junto para o target
-add_custom_command(
-    TARGET blasteroids
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/blasteroids_font.ttf ${CMAKE_CURRENT_BINARY_DIR}/blasteroids_font.ttf
 )
 
 install(TARGETS blasteroids DESTINATION bin)

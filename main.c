@@ -3,7 +3,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_memfile.h>
 
+#include "embedded_font.h"
 #include <blasteroids/config.h>
 
 #include <blasteroids/util_signal.h>
@@ -60,10 +62,14 @@ int main() {
     ctx.display = al_create_display(600, 600);
     al_set_window_title(ctx.display, WindowTitle); // Título da janela
     al_register_event_source(ctx.event_queue, al_get_display_event_source(ctx.display));
-    // Fonte
-    ctx.font = al_load_font("./blasteroids_font.ttf", 24, 0);
+    // Fonte (carregada da memória - embutida no binário)
+    ALLEGRO_FILE *memfile = al_open_memfile((void*)embedded_font_data, embedded_font_size, "r");
+    if (!memfile)
+        error("Não foi possível criar memfile para fonte embutida.");
+    ctx.font = al_load_ttf_font_f(memfile, NULL, 24, 0);
+    al_fclose(memfile);
     if (ctx.font == NULL)
-        error("Arquivo font.ttf não encontrado.");
+        error("Não foi possível carregar fonte embutida.");
     // Criando spaceship de exemplo
     Spaceship sp;
     sp.sx = 200;
