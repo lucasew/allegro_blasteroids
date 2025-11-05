@@ -14,6 +14,7 @@ modules:
   # Allegro 5 library
   - name: allegro
     buildsystem: cmake-ninja
+    builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DWANT_DOCS=OFF
@@ -27,19 +28,18 @@ modules:
   # The game itself
   - name: blasteroids
     buildsystem: cmake-ninja
+    builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
-    build-commands:
-      # Install the binary
-      - install -Dm755 blasteroids /app/bin/blasteroids
-      # Install the font file
-      - install -Dm644 blasteroids_font.ttf /app/bin/blasteroids_font.ttf
+    post-install:
+      # Install the font file (from source directory)
+      - install -Dm644 ../blasteroids_font.ttf /app/bin/blasteroids_font.ttf
       # Install desktop file
-      - install -Dm644 org.github.lucasew.Blasteroids.desktop /app/share/applications/org.github.lucasew.Blasteroids.desktop
+      - install -Dm644 ../org.github.lucasew.Blasteroids.desktop /app/share/applications/org.github.lucasew.Blasteroids.desktop
       # Install appdata
-      - install -Dm644 org.github.lucasew.Blasteroids.appdata.xml /app/share/metainfo/org.github.lucasew.Blasteroids.appdata.xml
+      - install -Dm644 ../org.github.lucasew.Blasteroids.appdata.xml /app/share/metainfo/org.github.lucasew.Blasteroids.appdata.xml
       # Install icon (using one of the screenshots as a placeholder)
-      - install -Dm644 doc/jogo.png /app/share/icons/hicolor/512x512/apps/org.github.lucasew.Blasteroids.png
+      - install -Dm644 ../doc/jogo.png /app/share/icons/hicolor/512x512/apps/org.github.lucasew.Blasteroids.png
     sources:
       - type: dir
         path: .
