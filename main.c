@@ -1,5 +1,7 @@
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
@@ -32,6 +34,9 @@ GameContext ctx;
 int main() {
     srand(time(NULL));
     info("Iniciando...");
+    // Initialize context pointers
+    ctx.font_data_copy = NULL;
+    ctx.font_memfile = NULL;
     // Signal handler
     if(catch_signal(SIGINT, stop) == -1 || catch_signal(SIGTERM, stop) == -1)
         error("Não foi possível setar o handler de interrupção");
@@ -63,13 +68,21 @@ int main() {
     al_set_window_title(ctx.display, WindowTitle); // Título da janela
     al_register_event_source(ctx.event_queue, al_get_display_event_source(ctx.display));
     // Fonte (carregada da memória - embutida no binário)
+    // Copy font data to writable memory to avoid issues with const data in Flatpak
+    ctx.font_data_copy = malloc(embedded_font_size);
+    if (!ctx.font_data_copy)
+        error("Não foi possível alocar memória para fonte embutida.");
+    memcpy(ctx.font_data_copy, embedded_font_data, embedded_font_size);
     // Keep memfile open while font is in use - FreeType may need to access the data
-    ctx.font_memfile = al_open_memfile((void*)embedded_font_data, embedded_font_size, "rb");
-    if (!ctx.font_memfile)
+    ctx.font_memfile = al_open_memfile(ctx.font_data_copy, embedded_font_size, "rb");
+    if (!ctx.font_memfile) {
+        free(ctx.font_data_copy);
         error("Não foi possível criar memfile para fonte embutida.");
+    }
     ctx.font = al_load_ttf_font_f(ctx.font_memfile, "embedded_font.ttf", 24, 0);
     if (ctx.font == NULL) {
         al_fclose(ctx.font_memfile);
+        free(ctx.font_data_copy);
         error("Não foi possível carregar fonte embutida.");
     }
     // Criando spaceship de exemplo
@@ -116,6 +129,9 @@ void handle_shutdown() {
     debug("Close font memfile");
     if (ctx.font_memfile)
         al_fclose(ctx.font_memfile);
+    debug("Free font data copy");
+    if (ctx.font_data_copy)
+        free(ctx.font_data_copy);
     //raise(SIGKILL);
     free(ctx.asteroids);
     free(ctx.bullets);
