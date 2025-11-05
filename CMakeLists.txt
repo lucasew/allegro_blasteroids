@@ -34,6 +34,7 @@ target_link_libraries(blasteroids
     allegro_primitives
     allegro_font
     allegro_ttf
+    allegro_memfile
 )
 
 install(TARGETS blasteroids DESTINATION bin)
