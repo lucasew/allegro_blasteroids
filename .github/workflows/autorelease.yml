@@ -77,6 +77,17 @@ jobs:
       run: |
         flatpak install -y --user flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
 
+    - name: Make release if everything looks right
+      if: github.event_name != 'pull_request'
+      env:
+        NEW_VERSION: ${{ github.event.inputs.new_version }}
+      run: |
+        if [[ ! -z "$NEW_VERSION" ]]; then
+          NO_TAG=1 ./make_release "$NEW_VERSION"
+          echo "New version: $(cat version.txt)" >> $GITHUB_STEP_SUMMARY
+          echo "RELEASE_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+        fi
+
     - name: Build Flatpak
       run: |
         flatpak-builder --user --install --force-clean build-flatpak org.github.lucasew.Blasteroids.yml
@@ -88,17 +99,6 @@ jobs:
         name: blasteroids-flatpak
         path: blasteroids.flatpak
         retention-days: 90
-
-    - name: Make release if everything looks right
-      if: github.event_name != 'pull_request'
-      env:
-        NEW_VERSION: ${{ github.event.inputs.new_version }}
-      run: |
-        if [[ ! -z "$NEW_VERSION" ]]; then
-          NO_TAG=1 ./make_release "$NEW_VERSION"
-          echo "New version: $(cat version.txt)" >> $GITHUB_STEP_SUMMARY
-          echo "RELEASE_VERSION=$(cat version.txt)" >> $GITHUB_ENV
-        fi
 
     - name: Create relase
       if: github.event_name != 'pull_request' && env.RELEASE_VERSION != ''
