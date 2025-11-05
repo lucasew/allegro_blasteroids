@@ -63,15 +63,15 @@ int main() {
     al_set_window_title(ctx.display, WindowTitle); // Título da janela
     al_register_event_source(ctx.event_queue, al_get_display_event_source(ctx.display));
     // Fonte (carregada da memória - embutida no binário)
-    ALLEGRO_FILE *memfile = al_open_memfile((void*)embedded_font_data, embedded_font_size, "rb");
-    if (!memfile)
+    // Keep memfile open while font is in use - FreeType may need to access the data
+    ctx.font_memfile = al_open_memfile((void*)embedded_font_data, embedded_font_size, "rb");
+    if (!ctx.font_memfile)
         error("Não foi possível criar memfile para fonte embutida.");
-    ctx.font = al_load_ttf_font_f(memfile, "embedded_font.ttf", 24, 0);
+    ctx.font = al_load_ttf_font_f(ctx.font_memfile, "embedded_font.ttf", 24, 0);
     if (ctx.font == NULL) {
-        al_fclose(memfile);
+        al_fclose(ctx.font_memfile);
         error("Não foi possível carregar fonte embutida.");
     }
-    al_fclose(memfile);
     // Criando spaceship de exemplo
     Spaceship sp;
     sp.sx = 200;
@@ -113,6 +113,9 @@ void handle_shutdown() {
     al_destroy_display(ctx.display);
     debug("Destroy font");
     al_destroy_font(ctx.font);
+    debug("Close font memfile");
+    if (ctx.font_memfile)
+        al_fclose(ctx.font_memfile);
     //raise(SIGKILL);
     free(ctx.asteroids);
     free(ctx.bullets);

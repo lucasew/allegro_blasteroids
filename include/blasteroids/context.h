@@ -12,6 +12,7 @@ struct GameContext {
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_TIMER *timer;
     ALLEGRO_FONT *font;
+    ALLEGRO_FILE *font_memfile;  // Keep memfile open while font is in use
     struct Spaceship ship;
     struct Asteroid **asteroids;
     struct Bullet **bullets;
