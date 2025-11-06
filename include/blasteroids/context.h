@@ -13,6 +13,7 @@ struct GameContext {
     ALLEGRO_TIMER *timer;
     ALLEGRO_FONT *font;
     ALLEGRO_FILE *font_memfile;  // Keep memfile open while font is in use
+    unsigned char *font_data_copy;  // Writable copy of embedded font data
     struct Spaceship ship;
     struct Asteroid **asteroids;
     struct Bullet **bullets;
