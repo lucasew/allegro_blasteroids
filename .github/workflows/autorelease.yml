@@ -31,43 +31,11 @@ jobs:
       id-token: write
       pull-requests: write
     steps:
-    - name: Install Nix
-      uses: cachix/install-nix-action@4e002c8ec80594ecd40e759629461e26c8abed15 # v31
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
     - name: Setup git config
       run: |
         git config user.name actions-bot
         git config user.email actions-bot@users.noreply.github.com
-
-    - name: Update Nix flake
-      if: github.event_name != 'pull_request'
-      run: nix flake update
-
-    - name: Create Pull Request if there is new stuff from updaters
-      if: github.event_name != 'pull_request'
-      uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8
-      id: pr_create
-      with:
-        commit-message: Updater script changes
-        branch: updater-bot
-        delete-branch: true
-        title: "Updater: stuff changed"
-        body: |
-          Changes caused from update scripts
-
-    - name: Stop if a pull request was created
-      if: github.event_name != 'pull_request'
-      env:
-        PR_NUMBER: ${{ steps.pr_create.outputs.pull-request-number }}
-      run: |
-        if [[ ! -z "$PR_NUMBER" ]]; then
-          echo "The update scripts changed something and a PR was created. Giving up deploy." >> $GITHUB_STEP_SUMMARY
-          exit 1
-        fi
-    - name: Try to build it
-      run: 'nix build .#'
 
     - name: Install Flatpak and flatpak-builder
       run: |
@@ -119,15 +87,6 @@ jobs:
       with:
         tag: ${{ env.RELEASE_VERSION }}
         title: Release ${{ env.RELEASE_VERSION }}
-
-    - uses: svenstaro/upload-release-action@6b7fa9f267e90b50a19fef07b3596790bb941741 # v2
-      if: github.event_name != 'pull_request' && env.RELEASE_VERSION != ''
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: build/*
-        tag: ${{ env.RELEASE_VERSION }}
-        overwrite: true
-        file_glob: true
 
     - name: Upload Flatpak to release
       uses: svenstaro/upload-release-action@6b7fa9f267e90b50a19fef07b3596790bb941741 # v2
