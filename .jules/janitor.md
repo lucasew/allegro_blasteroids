@@ -1,0 +1,1 @@
+- 2024-05-24: Fixed use-after-free vulnerability during asteroid list garbage collection by preserving the next pointer before freeing.

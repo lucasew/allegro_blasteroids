@@ -44,9 +44,11 @@ int blasteroids_asteroid__gc(struct Asteroid **a) {
             previous->next = this->next;
             free(this);
             destroyed++;
+            this = previous->next;
+        } else {
+            previous = this;
+            this = this->next;
         }
-        previous = this;
-        this = this->next;
     }
     if ((*a)->health <= 0) {
         struct Asteroid *dummy = (*a)->next;
