@@ -28,7 +28,7 @@ void blasteroids_bullet__append(struct Bullet **old, struct Bullet new) {
     if (*old == NULL ) {
         *old = malloc(sizeof(struct Bullet));
         if (*old == NULL) {
-            return;
+            error("Não foi possível alocar memória para nova bala.");
         }
         *(*old) = new;
         (*old)->next = NULL;
@@ -36,7 +36,7 @@ void blasteroids_bullet__append(struct Bullet **old, struct Bullet new) {
     }
     struct Bullet *newp = malloc(sizeof(struct Bullet));
     if (newp == NULL)
-        return;
+        error("Não foi possível alocar memória para nova bala.");
     *newp = new;
     newp->next = *old;
     *old = newp;

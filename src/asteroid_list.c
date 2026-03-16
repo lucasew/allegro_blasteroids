@@ -17,14 +17,14 @@ void blasteroids_asteroid__append(struct Asteroid **old, struct Asteroid new) {
     if (old == NULL) return;
     if (*old == NULL) {
         *old = malloc(sizeof(struct Asteroid));
-        if (*old == NULL) return;
+        if (*old == NULL) error("Não foi possível alocar memória para novo asteroide.");
         *(*old) = new;
         (*old)->next = NULL;
         return;
     }
     struct Asteroid *newp = malloc(sizeof(struct Asteroid));
     if (newp == NULL)
-        return;
+        error("Não foi possível alocar memória para novo asteroide.");
     *newp = new;
     newp->next = *old;
     *old = newp;

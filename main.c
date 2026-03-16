@@ -95,12 +95,14 @@ int main() {
     sp.health = 100;
     ctx.ship = sp;
     ctx.asteroids = malloc(sizeof(struct Asteroid*));
+    if (!ctx.asteroids)
+        error("Não foi possível alocar memória para asteroides.");
     *ctx.asteroids = NULL;
     blasteroids_asteroid__generate_and_append(&ctx);
     ctx.bullets = malloc(sizeof(struct Bullet*));
+    if (!ctx.bullets)
+        error("Não foi possível alocar memória para balas.");
     *ctx.bullets = NULL;
-    running = ctx.asteroids && ctx.bullets; // Se algum deles for falso/NULL, fechar o programa
-    if (!running) handle_shutdown(SIGINT);
     // Event loop in main thread
     ALLEGRO_EVENT event; // Apenas para não ter de redeclarar a cada iteração
     while(running) {

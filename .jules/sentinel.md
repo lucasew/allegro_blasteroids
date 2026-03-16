@@ -1,0 +1,1 @@
+- 2026-03-16: [Swallowed errors and missing va_end() in variadic functions - watch out for unhandled malloc failures and incomplete va_list cleanup in centralized loggers]
