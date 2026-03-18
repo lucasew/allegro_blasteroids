@@ -109,7 +109,7 @@ int main() {
     // ============= SAINDO ===========
     handle_shutdown(SIGINT);
 }
-void handle_shutdown() {
+void handle_shutdown(int sig) {
     info("Saindo....");
     /*debug("Destroy timer");
       al_destroy_timer(ctx->timer);*/

@@ -1,10 +1,10 @@
 #ifndef _BLASTEROIDS_UTIL_LOG
 #define _BLASTEROIDS_UTIL_LOG
 
-void debug(char *message, ...);
+void debug(const char *message, ...);
 
-void error(char *message, ...);
+void error(const char *message, ...);
 
-void info(char *message, ...);
+void info(const char *message, ...);
 
 #endif

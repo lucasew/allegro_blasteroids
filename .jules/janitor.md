@@ -1,0 +1,1 @@
+- 2025-03-18: [Always balance va_start with va_end and ensure pointers are not accessed after free]

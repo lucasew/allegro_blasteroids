@@ -6,7 +6,7 @@ int is_collision(GameContext *ctx);
 
 void update_states();
 
-void handle_shutdown();
+void handle_shutdown(int sig);
 
 void stop(int sig);
 

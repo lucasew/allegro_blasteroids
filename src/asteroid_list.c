@@ -42,8 +42,11 @@ int blasteroids_asteroid__gc(struct Asteroid **a) {
     while (this != NULL) {
         if (this->health <= 0) {
             previous->next = this->next;
+            struct Asteroid *next_node = this->next;
             free(this);
             destroyed++;
+            this = next_node;
+            continue;
         }
         previous = this;
         this = this->next;
