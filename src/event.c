@@ -11,6 +11,8 @@
 #include <blasteroids/spaceship_ops.h>
 #include <blasteroids/util_log.h>
 
+#define SECONDS_PER_MINUTE 60
+#define ASTEROID_GENERATION_INTERVAL 10
 
 void event_loop_once(GameContext *ctx, ALLEGRO_EVENT *event) {
     al_wait_for_event(ctx->event_queue, event);
@@ -21,7 +23,7 @@ void game_over(GameContext *ctx) {
     printf("========== GAME OVER ==========\n");
     printf("Você morreu :c.\n");
     printf("Você conseguiu %i pontos.\n", ctx->score);
-    printf("Tempo de jogo: %i min %i s\n", ctx->HearthBeat/(60*FPS), (ctx->HearthBeat/FPS)%60);
+    printf("Tempo de jogo: %i min %i s\n", ctx->HearthBeat/(SECONDS_PER_MINUTE*FPS), (ctx->HearthBeat/FPS)%SECONDS_PER_MINUTE);
     printf("===============================\n");
     fflush(stdout);
     handle_shutdown(SIGINT); // Finalizando o jogo
@@ -63,7 +65,7 @@ void handle_event(ALLEGRO_EVENT *ev, GameContext *ctx) {
     if(ev->type == ALLEGRO_EVENT_TIMER) {
         ctx->HearthBeat = ctx->HearthBeat + 1;
         blasteroids_context__tick(ctx);
-        if (!(ctx->HearthBeat%(10*FPS)))
+        if (!(ctx->HearthBeat%(ASTEROID_GENERATION_INTERVAL*FPS)))
             blasteroids_asteroid__generate_and_append(ctx);
     }
     if(ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE) {

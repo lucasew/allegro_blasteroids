@@ -5,6 +5,16 @@
 #include <blasteroids/bullet_draw.h>
 #include <blasteroids/util_draw.h>
 
+#define BULLET_LINE_THICKNESS 2.0f
+
+static const int BULLET_LINES_COUNT = 4;
+static const float bullet_lines[][4] = {
+    {1, 0, 0, 1},
+    {0, 1, -1, 0},
+    {-1, 0, 0, -1},
+    {0, -1, 1, 0}
+};
+
 
 void blasteroids_bullet__draw(struct Bullet *b) {
     ALLEGRO_TRANSFORM t;
@@ -12,10 +22,14 @@ void blasteroids_bullet__draw(struct Bullet *b) {
     al_rotate_transform(&t, deg2rad(b->heading));
     al_translate_transform(&t, b->sx, b->sy);
     al_use_transform(&t);
-    al_draw_line(1, 0, 0, 1, b->color, 2.0f);
-    al_draw_line(0, 1, -1, 0, b->color, 2.0f);
-    al_draw_line(-1, 0, 0, -1, b->color, 2.0f);
-    al_draw_line(0, -1, 1, 0, b->color, 2.0f);
+
+    for (int i = 0; i < BULLET_LINES_COUNT; i++) {
+        al_draw_line(
+            bullet_lines[i][0], bullet_lines[i][1],
+            bullet_lines[i][2], bullet_lines[i][3],
+            b->color, BULLET_LINE_THICKNESS
+        );
+    }
 }
 
 void blasteroids_bullet__draw_all(struct Bullet **b) {

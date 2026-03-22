@@ -4,23 +4,29 @@
 
 #include <blasteroids/text_draw.h>
 
+#define COLOR_BLUE al_map_rgb(0, 0, 255)
+#define COLOR_WHITE al_map_rgb(255, 255, 255)
+#define COLOR_GREEN al_map_rgb(0, 255, 0)
+#define TEXT_PADDING_X 10
+#define TEXT_PADDING_Y 10
+
 void blasteroids_life__draw(GameContext *ctx) {
     ALLEGRO_TRANSFORM t;
     al_identity_transform(&t);
     al_use_transform(&t);
-    al_draw_textf(ctx->font, al_map_rgb(0, 0, 255), 10, 10, ALLEGRO_ALIGN_LEFT, "<3 %i", ctx->ship.health);
+    al_draw_textf(ctx->font, COLOR_BLUE, TEXT_PADDING_X, TEXT_PADDING_Y, ALLEGRO_ALIGN_LEFT, "<3 %i", ctx->ship.health);
 }
 
 void blasteroids_counter__draw(GameContext *ctx) {
     ALLEGRO_TRANSFORM t;
     al_identity_transform(&t);
     al_use_transform(&t);
-    al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), blasteroids_display__w(ctx)/3, 10, ALLEGRO_ALIGN_RIGHT, "C: %i", ctx->HearthBeat);
+    al_draw_textf(ctx->font, COLOR_WHITE, blasteroids_display__w(ctx)/3, TEXT_PADDING_Y, ALLEGRO_ALIGN_RIGHT, "C: %i", ctx->HearthBeat);
 }
 
 void blasteroids_score__draw(GameContext *ctx) {
     ALLEGRO_TRANSFORM t;
     al_identity_transform(&t);
     al_use_transform(&t);
-    al_draw_textf(ctx->font, al_map_rgb(0, 255, 0), 2*blasteroids_display__w(ctx)/3, 10, ALLEGRO_ALIGN_RIGHT, "PTS: %i", ctx->score);
+    al_draw_textf(ctx->font, COLOR_GREEN, 2*blasteroids_display__w(ctx)/3, TEXT_PADDING_Y, ALLEGRO_ALIGN_RIGHT, "PTS: %i", ctx->score);
 }

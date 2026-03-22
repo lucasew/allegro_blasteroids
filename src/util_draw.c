@@ -2,8 +2,10 @@
 #include <blasteroids/config.h>
 #include <blasteroids/util_draw.h>
 
+#define DEG2RAD_CONSTANT 0.0174532925f
+
 float deg2rad(float deg) {
-    return 0.0174532925 * deg;
+    return DEG2RAD_CONSTANT * deg;
 }
 
 float blasteroids_get_delta_x(float speed, float degrees) {

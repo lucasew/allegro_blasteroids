@@ -8,6 +8,9 @@
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/bullet_list.h>
 
+#define SPACESHIP_COLLISION_RADIUS 10
+#define ASTEROID_COLLISION_RADIUS_BASE 22
+
 int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
     int collisions = 0;
     if (ctx->asteroids == NULL) return 0;
@@ -23,7 +26,7 @@ int blasteroids_check_collision_asteroid_spaceship(GameContext *ctx) {
         ax = this->sx;
         ay = this->sy;
         cur_distance = blasteroids_get_distance(sx, sy, ax, ay);
-        min_distance = 10 + 22*this->scale;
+        min_distance = SPACESHIP_COLLISION_RADIUS + ASTEROID_COLLISION_RADIUS_BASE*this->scale;
 #ifdef DEBUG_COLLISION_GRAPH
         // Linha entre o asteroide e a nave
         ALLEGRO_TRANSFORM t;
@@ -57,7 +60,7 @@ int blasteroids_check_collision_asteroid_bullet(GameContext *ctx) {
     while (bu != NULL) {
         while (as != NULL) {
             distancia = blasteroids_get_distance(as->sx, as->sy, bu->sx, bu->sy);
-            if (distancia < (22*as->scale)) {
+            if (distancia < (ASTEROID_COLLISION_RADIUS_BASE*as->scale)) {
                 ctx->score = ctx->score + bu->power;
                 as->health = as->health - bu->power;
                 struct Bullet *dummy = bu->next;
