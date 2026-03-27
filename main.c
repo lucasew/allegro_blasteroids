@@ -100,16 +100,16 @@ int main() {
     ctx.bullets = malloc(sizeof(struct Bullet*));
     *ctx.bullets = NULL;
     running = ctx.asteroids && ctx.bullets; // Se algum deles for falso/NULL, fechar o programa
-    if (!running) handle_shutdown(SIGINT);
+    if (!running) handle_shutdown();
     // Event loop in main thread
     ALLEGRO_EVENT event; // Apenas para não ter de redeclarar a cada iteração
     while(running) {
         event_loop_once(&ctx, &event);
     }
     // ============= SAINDO ===========
-    handle_shutdown(SIGINT);
+    handle_shutdown();
 }
-void handle_shutdown() {
+void handle_shutdown(void) {
     info("Saindo....");
     /*debug("Destroy timer");
       al_destroy_timer(ctx->timer);*/

@@ -11,6 +11,7 @@ void debug(char *message, ...) {
     va_start(args, message);
     printf("DEBUG: ");
     vprintf(message, args);
+    va_end(args);
     printf("\n");
 #endif
 }
@@ -20,6 +21,7 @@ void error(char *message, ...) {
     va_start(args, message);
     printf("ERRO: ");
     vprintf(message, args);
+    va_end(args);
     printf("\n");
     stop(SIGTERM); // Manda fechar
 }
@@ -29,5 +31,6 @@ void info(char *message, ...) {
     va_start(args, message);
     printf("INFO: ");
     vprintf(message, args);
+    va_end(args);
     printf("\n");
 }

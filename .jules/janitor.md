@@ -1,0 +1,1 @@
+- 2026-03-27: Always pair va_start with va_end when using variadic arguments to prevent memory issues and undefined behavior.

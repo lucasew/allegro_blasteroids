@@ -24,7 +24,7 @@ void game_over(GameContext *ctx) {
     printf("Tempo de jogo: %i min %i s\n", ctx->HearthBeat/(60*FPS), (ctx->HearthBeat/FPS)%60);
     printf("===============================\n");
     fflush(stdout);
-    handle_shutdown(SIGINT); // Finalizando o jogo
+    handle_shutdown(); // Finalizando o jogo
 }
 
 
