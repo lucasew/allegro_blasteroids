@@ -9,7 +9,7 @@
 #include <blasteroids/event.h>
 #include <blasteroids/spaceship_struct.h>
 #include <blasteroids/spaceship_ops.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 
 
 void event_loop_once(GameContext *ctx, ALLEGRO_EVENT *event) {

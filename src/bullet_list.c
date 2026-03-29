@@ -2,7 +2,7 @@
 #include <blasteroids/bullet_ops.h>
 #include <blasteroids/bullet_log.h>
 #include <blasteroids/asteroid_log.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 
 
 void blasteroids_bullet__gc(struct Bullet **b) {

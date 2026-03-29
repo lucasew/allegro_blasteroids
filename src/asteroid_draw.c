@@ -1,6 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <blasteroids/asteroid_struct.h>
-#include <blasteroids/util_draw.h>
+#include <blasteroids/util.h>
 
 const int QTD_POINTS = 12;
 const float asteroid_points[][2] = {

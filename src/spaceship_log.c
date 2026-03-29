@@ -1,5 +1,5 @@
 #include <blasteroids/spaceship_struct.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 #include <blasteroids/config.h>
 
 void blasteroids_spaceship__log(char *direction, Spaceship *s) {

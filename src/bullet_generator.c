@@ -1,7 +1,7 @@
 #include <blasteroids/asteroid_struct.h>
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/spaceship_struct.h>
-#include <blasteroids/util_rand.h>
+#include <blasteroids/util.h>
 
 
 struct Bullet blasteroids_bullet__generate(struct Spaceship sp) {

@@ -1,6 +1,6 @@
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/config.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 
 void blasteroids_bullet__log(char *reason, struct Bullet *b) {
 #ifdef DEBUG_BULLET

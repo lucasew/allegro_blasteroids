@@ -1,5 +1,5 @@
 #include <blasteroids/asteroid_struct.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 #include <blasteroids/config.h>
 
 void blasteroids_asteroid__log(char *reason, struct Asteroid *a) {

@@ -1,6 +1,6 @@
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/bullet_log.h>
-#include <blasteroids/util_draw.h>
+#include <blasteroids/util.h>
 #include <blasteroids/config.h>
 
 void blasteroids_bullet__destroy(struct Bullet **b) {

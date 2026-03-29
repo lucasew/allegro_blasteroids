@@ -1,7 +1,6 @@
 #include <blasteroids/config.h>
 #include <blasteroids/context.h>
-#include <blasteroids/util_draw.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 #include <blasteroids/asteroid_struct.h>
 #include <blasteroids/asteroid_draw.h>
 #include <blasteroids/asteroid_list.h>

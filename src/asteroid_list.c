@@ -1,6 +1,6 @@
 #include <blasteroids/asteroid_struct.h>
 #include <blasteroids/asteroid_ops.h>
-#include <blasteroids/util_log.h>
+#include <blasteroids/util.h>
 
 void blasteroids_asteroid__update_all(struct Asteroid **a) {
     if (a == NULL) return;

@@ -3,7 +3,7 @@
 
 #include <blasteroids/bullet_struct.h>
 #include <blasteroids/bullet_draw.h>
-#include <blasteroids/util_draw.h>
+#include <blasteroids/util.h>
 
 
 void blasteroids_bullet__draw(struct Bullet *b) {

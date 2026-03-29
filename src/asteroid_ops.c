@@ -1,7 +1,6 @@
 #include <blasteroids/config.h>
 #include <blasteroids/asteroid_log.h>
-#include <blasteroids/util_draw.h>
-#include <blasteroids/util_rand.h>
+#include <blasteroids/util.h>
 
 void blasteroids_asteroid__update(struct Asteroid *a) {
     if (a == NULL) return;

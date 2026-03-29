@@ -1,6 +1,6 @@
 #include <blasteroids/spaceship_struct.h>
 #include <allegro5/allegro_primitives.h>
-#include <blasteroids/util_draw.h>
+#include <blasteroids/util.h>
 
 void blasteroids_ship__draw(Spaceship s) {
     ALLEGRO_TRANSFORM transform;

@@ -1,5 +1,5 @@
 #include <blasteroids/spaceship_struct.h>
-#include <blasteroids/util_draw.h>
+#include <blasteroids/util.h>
 #include <blasteroids/spaceship_log.h>
 
 void blasteroids_ship__get_delta(float *deltax, float *deltay, Spaceship *s) {
